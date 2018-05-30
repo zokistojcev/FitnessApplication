@@ -1,0 +1,28 @@
+﻿@model FitnessApp.Models.Trainer
+@using FitnessApp.Models
+@{
+    ViewBag.Title = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    string imgPath = Model.Photo == null ? "1" : Model.Photo;
+}
+<h2>@Model.FullName</h2>
+<img src="@Url.Content(imgPath)" alt="No photo available" class="img-thumbnail" height="300" width="200">
+
+<table class="table-sm">
+    <tbody>        
+        <tr>
+            <td>Phone number:</td>
+            <td>@Model.Phone</td>
+        </tr>
+        <tr>
+            <td>Email:</td>
+            <td>@Model.Email</td>
+        </tr>
+        <tr>
+            <td>Biography:</td>
+            <td>@Model.Biography</td>
+        </tr>
+    </tbody>
+</table>
+<br />
+<p>@Html.ActionLink("Back to List", "ListAll")</p>

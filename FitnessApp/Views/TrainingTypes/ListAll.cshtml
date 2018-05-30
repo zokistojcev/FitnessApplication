@@ -1,0 +1,43 @@
+﻿@using FitnessApp.Models
+@model List<TrainingType>
+@{
+    ViewBag.Title = "ListAll";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Trainings</h2>
+<a class="btn btn-primary" href="@Url.Action("Create", "TrainingTypes")" role="button">Create new</a>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Id</th>
+            <th scope="col">Name</th>
+            <th scope="col">Description</th>
+            <th scope="col">Trainer</th>
+            <th scope="col">Photo</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (TrainingType training in Model)
+        {
+            <tr>
+                <td>@training.Id</td>
+                <td>@Html.ActionLink(training.Name, "Details", new { id = training.Id })</td>
+                <td>@training.Description</td>
+                <td>@training.Trainer.FullName</td>
+                <td>@training.Photo</td>
+                <td>@Html.ActionLink("Edit", "Edit", new { id = training.Id }, new { @class = "btn btn-primary" })</td>
+                <td>
+                    @using (Html.BeginForm("Delete", "TrainingTypes", new { id = training.Id }))
+                    {
+                        <button class="btn btn-primary" type="submit" onclick="return confirm('Are you sure you want to delete @training.Name')">
+                            Delete
+                        </button>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>

@@ -1,0 +1,63 @@
+﻿@model FitnessApp.Models.Trainer
+@using FitnessApp.Repository
+@{
+    ViewBag.Title = "Edit";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Edit trainer</h2>
+
+
+@using (Html.BeginForm("Edit", "Trainers", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div>
+        <div class="form-group">
+            <div class="align-content-lg-start my-lg-2">
+                <div class="w-25">
+                    @Html.LabelFor(m => m.FullName)
+                    @Html.TextBoxFor(m => m.FullName, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.FullName, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="align-content-lg-start my-lg-2">
+                <div class="w-25">
+                    @Html.LabelFor(m => m.Phone)
+                    @Html.TextBoxFor(m => m.Phone, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Phone, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="align-content-lg-start my-lg-2">
+                <div class="w-25">
+                    @Html.LabelFor(m => m.Email)
+                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div class="form-group">
+            <div class="align-content-lg-start my-lg-2">
+                <div class="w-25">
+                    @Html.LabelFor(m => m.Biography)
+                    @Html.TextAreaFor(m => m.Biography, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.Biography, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="align-content-lg-start my-lg-2">
+                <div class="w-25">
+                    @Html.LabelFor(m => m.Photo)
+                    <input type="file" name="PhotoUpload" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+
+}

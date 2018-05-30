@@ -1,0 +1,54 @@
+﻿@model FitnessApp.ViewModels.TrainingTypeTrainerViewModel
+@using FitnessApp.Repository
+@{
+    ViewBag.Title = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Create new training</h2>
+
+
+@using (Html.BeginForm("Create", "TrainingTypes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <div>
+        <div class="form-group">
+            <div class="align-content-lg-start my-lg-2">
+                <div class="w-25">
+                    @Html.LabelFor(m => m.TrainingType.Name)
+                    @Html.TextBoxFor(m => m.TrainingType.Name, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.TrainingType.Name, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="align-content-lg-start my-lg-2">
+                <div class="w-25">
+                    @Html.LabelFor(m => m.TrainingType.Description)
+                    @Html.TextBoxFor(m => m.TrainingType.Description, new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.TrainingType.Description, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="align-content-lg-start my-lg-2">
+                <div class="w-25">
+                    @Html.LabelFor(m => m.TrainingType.Trainer)
+                    @Html.DropDownListFor(m => m.TrainingType.Trainer.Id, new SelectList(Model.Trainers, "Id", "FullName" ), "Select trainer", new { @class = "form-control" })
+                    @Html.ValidationMessageFor(m => m.TrainingType.Trainer, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>        
+        <div class="form-group">
+            <div class="align-content-lg-start my-lg-2">
+                <div class="w-25">
+                    @Html.LabelFor(m => m.TrainingType.Photo)
+                    <input type="file" name="PhotoUpload" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <input type="hidden" name="Id" value="@(TrainerRepo.TrainingTypes[TrainerRepo.TrainingTypes.Count() - 1].Id+1)" />
+        <button type="submit" class="btn btn-primary">Save</button>
+    </div>
+
+}
