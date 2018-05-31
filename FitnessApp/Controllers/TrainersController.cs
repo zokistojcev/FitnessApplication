@@ -1,5 +1,6 @@
 ﻿using FitnessApp.Models;
 using FitnessApp.Repository;
+using FitnessApp.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -11,6 +12,15 @@ namespace FitnessApp.Controllers
 {
     public class TrainersController : Controller
     {
+        private FitnessDb _context;
+
+        public TrainersController()
+        {
+            _context = new FitnessDb();
+
+        }
+     
+
         // GET: Trainers
         public ActionResult Index()
         {
@@ -18,8 +28,23 @@ namespace FitnessApp.Controllers
         }
         public ViewResult ListAll()
         {
-            List<Trainer> trainers = TrainerRepo.Trainers;
-            return View(trainers);
+            List<Trainer> trainers = _context.Trainers.ToList();
+            List<TrainerViewModel> ltvm = new List<TrainerViewModel> ();
+            foreach (var item in trainers)
+            {
+                TrainerViewModel tvm = new TrainerViewModel();
+
+                tvm.Biography = item.Biography;
+                tvm.Email = item.Email;
+                tvm.FullName = item.FullName;
+                tvm.Id = item.Id;
+                tvm.Phone = item.Phone;
+                tvm.Photo = item.Photo;
+
+                ltvm.Add(tvm);
+            }
+       
+            return View(ltvm);
         }
 
         public ActionResult Details(int? id)
@@ -27,8 +52,17 @@ namespace FitnessApp.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            Trainer trainer = TrainerRepo.Trainers.Single(x => x.Id == id);
-            return View(trainer);
+            Trainer trainer = _context.Trainers.Single(x => x.Id == id);
+            TrainerViewModel tvm = new TrainerViewModel();
+            tvm.Biography = trainer.Biography;
+            tvm.Email = trainer.Email;
+            tvm.FullName = trainer.FullName;
+            tvm.Id = trainer.Id;
+            tvm.Phone = trainer.Phone;
+            tvm.Photo = trainer.Photo;
+            
+
+            return View(tvm);
         }
 
         [HttpGet]
@@ -38,7 +72,7 @@ namespace FitnessApp.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(Trainer trainer)
+        public ActionResult Create(TrainerViewModel trainer)
         {
 
             if (ModelState.IsValid)
@@ -51,9 +85,20 @@ namespace FitnessApp.Controllers
                     trainer.Photo = "~/Images/Trainers/" + fileName;
                     fileName = Path.Combine(Server.MapPath("~/Images/Trainers/"), fileName);
                     trainer.PhotoUpload.SaveAs(fileName);
-                }
 
-                TrainerRepo.Trainers.Add(trainer);
+                    
+
+                }
+                Trainer model = new Trainer();
+                model.Biography = trainer.Biography;
+                model.Email = trainer.Email;
+                model.FullName = trainer.FullName;
+                model.Id = trainer.Id;
+                model.Phone = trainer.Phone;
+                model.Photo = trainer.Photo;
+
+                _context.Trainers.Add(model);
+                _context.SaveChanges();
                 return RedirectToAction("ListAll");
             }
             return View(trainer);
@@ -65,17 +110,26 @@ namespace FitnessApp.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            Trainer trainer = TrainerRepo.Trainers.Single(x => x.Id == id);
-            return View("Edit", trainer);
+            Trainer trainer = _context.Trainers.Find(id);
+
+            TrainerViewModel tvm = new TrainerViewModel();
+            tvm.Biography = trainer.Biography;
+            tvm.Email = trainer.Email;
+            tvm.FullName = trainer.FullName;
+            tvm.Id = trainer.Id;
+            tvm.Phone = trainer.Phone;
+            tvm.Photo = trainer.Photo;
+
+            return View("Edit", tvm);
         }
 
         [HttpPost]
-        public ActionResult Edit(Trainer trainer)
+        public ActionResult Edit(TrainerViewModel trainer)
         {
             if (!ModelState.IsValid)
                 return View("Edit", trainer);
 
-            int index = TrainerRepo.Trainers.FindIndex(t => t.Id == trainer.Id);
+            var model = _context.Trainers.Find(trainer.Id);
 
             if (trainer.PhotoUpload != null)
             {
@@ -87,10 +141,18 @@ namespace FitnessApp.Controllers
                 trainer.PhotoUpload.SaveAs(fileName);
             }
             else
-                trainer.Photo = TrainerRepo.Trainers.Single(x => x.Id == trainer.Id).Photo;
+                trainer.Photo = _context.Trainers.Single(x => x.Id == trainer.Id).Photo;
 
-            TrainerRepo.Trainers.RemoveAt(index);
-            TrainerRepo.Trainers.Insert(index, trainer);
+            model.Email = trainer.Email;
+            model.Biography = trainer.Biography;
+            model.FullName = trainer.FullName;
+            model.Phone = trainer.Phone;
+            model.Photo = trainer.Photo;
+
+            _context.SaveChanges();
+
+            //_context.Trainers.RemoveAt(index);
+            //_context.Trainers.Insert(index, trainer);
 
             return RedirectToAction("ListAll");
         }
@@ -101,9 +163,10 @@ namespace FitnessApp.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            int index = TrainerRepo.Trainers.FindIndex(t => t.Id == id);
-            TrainerRepo.Trainers.RemoveAt(index);
-
+            var trainer = _context.Trainers.Find(id);
+            
+            _context.Trainers.Remove(trainer);
+            _context.SaveChanges();
             return RedirectToAction("ListAll");
         }
     }

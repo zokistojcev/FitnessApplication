@@ -1,5 +1,5 @@
-﻿@using FitnessApp.Models
-@model List<Trainer>
+﻿@using FitnessApp.ViewModels
+@model List<TrainerViewModel>
 @{
     ViewBag.Title = "ListAll";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -21,7 +21,8 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (Trainer trainer in Model)
+        
+        @foreach (var trainer in Model)
         {
             <tr>
                 <td>@trainer.Id</td>

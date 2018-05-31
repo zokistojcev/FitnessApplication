@@ -9,6 +9,6 @@ namespace FitnessApp.ViewModels
     public class TrainingTypeTrainerViewModel
     {
         public IEnumerable<Trainer> Trainers { get; set; }
-        public TrainingType TrainingType { get; set; }
+        public TrainingTypeViewModel TrainingType { get; set; }
     }
 }

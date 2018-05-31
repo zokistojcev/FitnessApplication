@@ -1,12 +1,13 @@
-﻿using System;
+﻿using FitnessApp.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
 
-namespace FitnessApp.Models
+namespace FitnessApp.ViewModels
 {
-    public class TrainingType
+    public class TrainingTypeViewModel
     {
         [Required]
         public int Id { get; set; }
@@ -22,8 +23,8 @@ namespace FitnessApp.Models
         [StringLength(200)]
         public string Photo { get; set; }
 
-        //[Display(Name = "Photo")]
-        //public HttpPostedFileBase PhotoUpload { get; set; }
+        [Display(Name = "Photo")]
+        public HttpPostedFileBase PhotoUpload { get; set; }
 
         [Required]
         public Trainer Trainer { get; set; }
