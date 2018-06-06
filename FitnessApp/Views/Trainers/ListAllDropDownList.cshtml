@@ -1,0 +1,85 @@
+﻿@model List<FitnessApp.ViewModels.TrainerViewModel>
+
+
+@{
+    ViewBag.Title = "ListAllDropDownList";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>ListAllDropDownList</h2>
+
+<form action="/" method="post"></form>
+<select id="z">
+    <option selected disabled="disabled">Избери држава</option>
+    @foreach (var item in Model)
+    {
+        <option>
+            @item.FullName
+        </option>
+    }
+
+</select>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+<script>
+
+    $(document).ready(function () {
+
+
+        var selectDropDown = $("#z");
+
+        selectDropDown.change(function () {
+        selectDropDown.empty();
+        selectDropDown.append('<option value="">-- Избери држава --</option>');
+        selectDropDown.prop('selectedIndex', 0);
+
+        $.ajax({
+            url: "http://localhost:49998/Trainers/ListAllJson/",
+            dataType: 'json',
+            success: function (res) {
+
+
+                for (var i = 0; i < res.length; i++) {
+                    console.log(res[i].FullName, res[i].Id);
+                    selectDropDown.append(`<option value="${res[i].Id}">${res[i].FullName}</option>`);
+
+
+
+                }
+            }
+        });
+
+        //$.ajax({
+
+        //    .....
+        //    ....
+
+        //});
+
+        //$.ajax({
+        //    method: "GET",
+        //    url: "http://localhost:49998/Trainers/ListAllJson/",
+        //    dataType: "json",
+        //    success: function (data) {
+        //        console.log("aaaaaaaaaaaaaaa");
+        //    },
+        //    error: function (e) {
+        //        console.log(e);
+        //    }
+        //});
+
+
+
+
+        //for (var i = 0; i < length; i++) {
+
+        //}
+        //selectDropDown.append('<option value="mercedes">Mercedes</option>');
+
+        });
+
+        console.log("ready!");
+    });
+
+</script>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Web;
 
@@ -8,6 +9,7 @@ namespace FitnessApp.Models
 {
     public class TrainingType
     {
+       
         [Required]
         public int Id { get; set; }
 
@@ -27,5 +29,8 @@ namespace FitnessApp.Models
 
         [Required]
         public Trainer Trainer { get; set; }
+
+        [ForeignKey("Trainer")]
+        public int TrainerId { get; set; }
     }
 }

@@ -19,17 +19,17 @@ namespace FitnessApp.Controllers
             _context = new FitnessDb();
 
         }
-     
+
 
         // GET: Trainers
-        public ActionResult Index()
-        {
-            return View();
-        }
-        public ViewResult ListAll()
+        //public ActionResult Index()
+        //{
+        //    return View();
+        //}
+        public ViewResult Index()
         {
             List<Trainer> trainers = _context.Trainers.ToList();
-            List<TrainerViewModel> ltvm = new List<TrainerViewModel> ();
+            List<TrainerViewModel> ltvm = new List<TrainerViewModel>();
             foreach (var item in trainers)
             {
                 TrainerViewModel tvm = new TrainerViewModel();
@@ -43,7 +43,7 @@ namespace FitnessApp.Controllers
 
                 ltvm.Add(tvm);
             }
-       
+
             return View(ltvm);
         }
 
@@ -60,7 +60,7 @@ namespace FitnessApp.Controllers
             tvm.Id = trainer.Id;
             tvm.Phone = trainer.Phone;
             tvm.Photo = trainer.Photo;
-            
+
 
             return View(tvm);
         }
@@ -86,7 +86,7 @@ namespace FitnessApp.Controllers
                     fileName = Path.Combine(Server.MapPath("~/Images/Trainers/"), fileName);
                     trainer.PhotoUpload.SaveAs(fileName);
 
-                    
+
 
                 }
                 Trainer model = new Trainer();
@@ -99,7 +99,7 @@ namespace FitnessApp.Controllers
 
                 _context.Trainers.Add(model);
                 _context.SaveChanges();
-                return RedirectToAction("ListAll");
+                return RedirectToAction("Index");
             }
             return View(trainer);
         }
@@ -154,7 +154,7 @@ namespace FitnessApp.Controllers
             //_context.Trainers.RemoveAt(index);
             //_context.Trainers.Insert(index, trainer);
 
-            return RedirectToAction("ListAll");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -164,10 +164,59 @@ namespace FitnessApp.Controllers
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
             var trainer = _context.Trainers.Find(id);
-            
+
             _context.Trainers.Remove(trainer);
             _context.SaveChanges();
-            return RedirectToAction("ListAll");
+            return RedirectToAction("Index");
+        }
+
+
+        public ActionResult SelectFromDropDown(TrainerViewModel trainer)
+        {
+
+            return View();
+        }
+
+        public ActionResult ListAllJson()
+        {
+            List<Trainer> trainers = _context.Trainers.ToList();
+            List<TrainerViewModel> ltvm = new List<TrainerViewModel>();
+            foreach (var item in trainers)
+            {
+                TrainerViewModel tvm = new TrainerViewModel();
+
+                tvm.Biography = item.Biography;
+                tvm.Email = item.Email;
+                tvm.FullName = item.FullName;
+                tvm.Id = item.Id;
+                tvm.Phone = item.Phone;
+                tvm.Photo = item.Photo;
+
+                ltvm.Add(tvm);
+            }
+
+            return Json(ltvm, JsonRequestBehavior.AllowGet);
+        }
+
+        public ActionResult ListAllDropDownList()
+        {
+            List<Trainer> trainers = _context.Trainers.ToList();
+            List<TrainerViewModel> ltvm = new List<TrainerViewModel>();
+            foreach (var item in trainers)
+            {
+                TrainerViewModel tvm = new TrainerViewModel();
+
+                tvm.Biography = item.Biography;
+                tvm.Email = item.Email;
+                tvm.FullName = item.FullName;
+                tvm.Id = item.Id;
+                tvm.Phone = item.Phone;
+                tvm.Photo = item.Photo;
+
+                ltvm.Add(tvm);
+            }
+
+            return View(ltvm);
         }
     }
 }

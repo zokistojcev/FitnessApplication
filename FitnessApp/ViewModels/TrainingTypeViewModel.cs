@@ -27,6 +27,6 @@ namespace FitnessApp.ViewModels
         public HttpPostedFileBase PhotoUpload { get; set; }
 
         [Required]
-        public Trainer Trainer { get; set; }
+        public int TrainerId { get; set; }
     }
 }

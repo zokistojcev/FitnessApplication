@@ -1,4 +1,4 @@
-﻿@model FitnessApp.ViewModels.TrainingTypeViewModel
+﻿@model FitnessApp.ViewModels.TrainingTypeDetailsViewModel
 @using FitnessApp.Models
 @{
     ViewBag.Title = "Details";
@@ -9,16 +9,16 @@
 <img src="@Url.Content(imgPath)" alt="No photo available" class="img-thumbnail" height="300" width="200">
 
 <table class="table-sm">
-    <tbody>        
+    <tbody>
         <tr>
-            <td>Trainer:</td>
-            <td>@Model.Trainer.FullName</td>
+            <td>Trainer type:</td>
+            <td>@Model.Name</td>
         </tr>
         <tr>
-            <td>Description:</td>
-            <td>@Model.Description</td>
-        </tr>        
+            <td>Trainer Full name:</td>
+            <td>@Model.Trainer.FullName</td>
+        </tr>
     </tbody>
 </table>
 <br />
-<p>@Html.ActionLink("Back to List", "ListAll")</p>
+<p>@Html.ActionLink("Back to List", "Index")</p>
